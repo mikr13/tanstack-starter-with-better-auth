@@ -1,0 +1,31 @@
+{
+  "Auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign back into your account",
+      "email": "Email",
+      "password": "Password",
+      "signIn": "Sign in",
+      "newHere": "New here? Get started"
+    },
+    "register": {
+      "title": "Get started",
+      "subtitle": "Create your account",
+      "name": "Your name",
+      "email": "Email",
+      "password": "Password",
+      "signUp": "Create account",
+      "alreadyHaveAnAccount": "Already have an account?"
+    },
+    "logout": {
+      "signOut": "Sign out"
+    }
+  },
+  "Home": {
+    "title": "Welcome to TanStack starter!"
+  },
+  "language.en": "English",
+  "language.es": "Spanish",
+  "language.pt": "Portuguese (Brazil)",
+  "language.fr": "French"
+}
