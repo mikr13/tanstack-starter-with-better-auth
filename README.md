@@ -6,7 +6,7 @@ This is a small starter for those wanting to jump-start their project with the n
 
 - Tailwind CSS
 - Better-Auth
-- i18n
+- i18n (i18next)
 - Dark mode
 - Sonner
 - Shadcn
@@ -25,7 +25,6 @@ This is a small starter for those wanting to jump-start their project with the n
 DATABASE_URL='postgresql://postgres:postgres@localhost:5432/postgres'
 BETTER_AUTH_SECRET='my_super_secret_here'
 BETTER_AUTH_URL='http://localhost:3000'
-
 ```
 
 4. Install dependencies with `pnpm install`
