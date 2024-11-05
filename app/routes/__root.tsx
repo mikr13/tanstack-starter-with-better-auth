@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
+import { useEffect } from 'react';
 import {
-  createRootRouteWithContext,
-  useRouteContext,
+  createRootRouteWithContext
 } from '@tanstack/react-router';
 import { Outlet, ScrollRestoration } from '@tanstack/react-router';
 import { Body, Head, Html, Meta, Scripts } from '@tanstack/start';
@@ -9,7 +9,7 @@ import { ThemeProvider } from '@/components/theme/ThemeProvider';
 import type { QueryClient } from '@tanstack/react-query';
 import { getAuthQueryOptions } from '@/services/auth';
 import { I18nextProvider } from 'react-i18next';
-import i18n, { getLocale } from '@/lib/i18n';
+import i18n, { getLocale, supportedLocales } from '@/lib/i18n';
 import { Toaster } from '@/components/ui/sonner';
 
 import '@/lib/i18n';
@@ -71,7 +71,13 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: ReactNode }) {
-  const { locale } = useRouteContext({ from: '__root__' });
+  
+  useEffect(() => {
+    const storedLang = localStorage.getItem('i18nextLng');
+    if (storedLang && supportedLocales.includes(storedLang as (typeof supportedLocales)[number])) {
+      i18n.changeLanguage(storedLang);
+    }
+  }, []);
 
   return (
     <Html>
@@ -79,7 +85,7 @@ function RootDocument({ children }: { children: ReactNode }) {
         <Meta />
       </Head>
       <Body>
-        <I18nextProvider i18n={i18n.cloneInstance({ lng: locale })}>
+        <I18nextProvider i18n={i18n}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}
             <Toaster position="top-center" />

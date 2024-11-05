@@ -4,6 +4,7 @@ import { initReactI18next } from 'react-i18next';
 import { getHeader } from 'vinxi/http';
 import { z } from 'zod';
 import { zodI18nMap } from 'zod-i18n-map';
+import LanguageDetector from 'i18next-browser-languagedetector';
 
 import enUS from '@/locales/en-us/translation.json';
 import esES from '@/locales/es-es/translation.json';
@@ -25,15 +26,6 @@ type Locale = (typeof supportedLocales)[number];
 
 const defaultLocale: Locale = 'en';
 
-const getClientLocale = (): string => {
-  if (typeof window === 'undefined') return defaultLocale;
-  
-  const userLanguage =
-    'userLanguage' in navigator ? navigator.userLanguage : null;
-
-  return navigator.language || (userLanguage as string);
-};
-
 const getLocale = createServerFn('GET', async () => {
   const header = getHeader('Accept-Language');
   const languages = header?.split(',') ?? [];
@@ -43,16 +35,28 @@ const getLocale = createServerFn('GET', async () => {
   );
 });
 
-i18n.use(initReactI18next).init({
-  fallbackLng: defaultLocale,
-  supportedLngs: supportedLocales,
-  debug: import.meta.env.DEV,
-  lng: getClientLocale(),
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    fallbackLng: defaultLocale,
+    supportedLngs: supportedLocales,
+    debug: import.meta.env.DEV,
+    
+    detection: {
+      order: ['localStorage', 'navigator'],
+      lookupLocalStorage: 'i18nextLng',
+      caches: ['localStorage'],
+    },
 
-  saveMissing: true,
-  saveMissingTo: 'current',
-  resources,
-});
+    interpolation: {
+      escapeValue: false,
+    },
+
+    saveMissing: true,
+    saveMissingTo: 'current',
+    resources,
+  });
 
 z.setErrorMap(zodI18nMap);
 

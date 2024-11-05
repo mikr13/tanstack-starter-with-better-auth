@@ -13,6 +13,11 @@ import { LucideLanguages } from 'lucide-react';
 const LocaleToggle: FC = () => {
   const { t, i18n } = useTranslation();
 
+  const handleLanguageChange = (locale: string) => {
+    i18n.changeLanguage(locale);
+    localStorage.setItem('i18nextLng', locale);
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -24,7 +29,7 @@ const LocaleToggle: FC = () => {
         {supportedLocales.map((locale) => (
           <DropdownMenuItem
             key={locale}
-            onClick={() => i18n.changeLanguage(locale)}
+            onClick={() => handleLanguageChange(locale)}
           >
             {t(`language.${locale}`, { defaultValue: locale })}
           </DropdownMenuItem>
