@@ -2,6 +2,10 @@
 
 This is a small starter for those wanting to jump-start their project with the new TanStack Start.
 
+
+### Todo
+[] Fix the HydrationHydration error with i18next-browser-languagedetector
+
 ## Features
 
 - Tailwind CSS
