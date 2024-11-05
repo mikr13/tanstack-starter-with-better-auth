@@ -39,9 +39,14 @@ const HeroHeader: FC = () => {
       <div className="flex flex-col gap-y-4">
         <div className="flex flex-row gap-x-4 justify-between">
           {auth?.isAuthenticated ? (
-            <Button variant="outline" onClick={handleSignOut}>
-              {t('Auth.logout.signOut')}
-            </Button>
+            <>
+              <Button variant="outline" onClick={handleSignOut}>
+                {t('Auth.logout.signOut')}
+              </Button>
+              <Button asChild variant="default">
+                <Link to="/dashboard">Go to Dashboard</Link>
+              </Button>
+            </>
           ) : (
             <Button asChild variant="link">
               <Link to="/auth/login">{t('Auth.login.signIn')}</Link>
