@@ -4,7 +4,7 @@ This is a small starter for those wanting to jump-start their project with the n
 
 
 ### Todo
-[] Fix the HydrationHydration error with i18next-browser-languagedetector
+[ ] Fix the Hydration error with i18next-browser-languagedetector
 
 ## Features
 
