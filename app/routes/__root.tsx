@@ -1,6 +1,5 @@
 import { ThemeProvider } from '@/components/theme/ThemeProvider';
 import { Toaster } from '@/components/ui/sonner';
-import { getAuthQueryOptions } from '@/services/auth';
 import type { QueryClient } from '@tanstack/react-query';
 import {
   createRootRouteWithContext,
@@ -9,6 +8,7 @@ import {
 import { Body, Head, Html, Meta, Scripts } from '@tanstack/start';
 import type { ReactNode } from 'react';
 
+import { session } from '@/services/auth';
 import globalCss from '@/styles/globals.css?url';
 import geistMono from 'non.geist/mono?url';
 import geist from 'non.geist?url';
@@ -46,10 +46,8 @@ window.$RefreshSig$ = () => (type) => type`,
         },
       ]
       : [],
-  beforeLoad: async ({ context }) => {
-    const auth = await context.queryClient.ensureQueryData(
-      getAuthQueryOptions(),
-    );
+  beforeLoad: async () => {
+    const auth = await session();
 
     return { auth };
   },

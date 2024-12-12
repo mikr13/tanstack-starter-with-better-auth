@@ -1,52 +1,62 @@
-import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { authSchemas, useSignInMutation } from '@/services/auth';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Icons } from '@/components/ui/icons';
+import { signIn } from '@/services/auth';
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { ArrowRight } from 'lucide-react';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import type { z } from 'zod';
 
 function Login() {
-  const { t } = useTranslation();
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const { mutateAsync } = useSignInMutation();
-  const form = useForm<z.infer<typeof authSchemas.signIn>>({
-    resolver: zodResolver(authSchemas.signIn),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
+  // const { mutateAsync } = useSignInMutation();
+  // const { mutateAsync: mutateAsyncGitHub } = useSignInGitHubMutation();
+  // const form = useForm<z.infer<typeof authSchemas.signIn>>({
+  //   resolver: zodResolver(authSchemas.signIn),
+  //   defaultValues: {
+  //     email: '',
+  //     password: '',
+  //   },
+  // });
 
-  const onSubmit = form.handleSubmit(async (data) => {
-    const signUpPromise = mutateAsync(data, {
-      onSuccess: () => {
-        router.navigate({ to: '/' });
-      },
-      onError: () => { },
+  // const onSubmit = form.handleSubmit(async (data) => {
+  //   const signUpPromise = mutateAsync(data, {
+  //     onSuccess: () => {
+  //       router.navigate({ to: '/' });
+  //     },
+  //     onError: () => { },
+  //   });
+
+  //   toast.promise(signUpPromise, {
+  //     loading: 'Signing in...',
+  //     error: 'Failed to sign in',
+  //   });
+
+  //   try {
+  //     await signUpPromise;
+  //   } catch (error) {
+  //     try {
+  //       if (!(error instanceof Error)) throw new Error('Unknown error');
+  //       const parsedError = JSON.parse(error.message);
+  //       setError(parsedError.body.body.message);
+  //     } catch (e) {
+  //       setError('Failed to sign in');
+  //     }
+  //   }
+  // });
+
+  const onGitHubSignIn = async () => {
+    const signInPromise = signIn.social({
+      provider: 'github',
     });
 
-    toast.promise(signUpPromise, {
+    toast.promise(signInPromise, {
       loading: 'Signing in...',
       error: 'Failed to sign in',
     });
 
     try {
-      await signUpPromise;
+      await signInPromise;
     } catch (error) {
       try {
         if (!(error instanceof Error)) throw new Error('Unknown error');
@@ -56,7 +66,7 @@ function Login() {
         setError('Failed to sign in');
       }
     }
-  });
+  };
 
   return (
     <div className="container flex flex-col h-screen space-y-6 justify-center items-center">
@@ -67,7 +77,7 @@ function Login() {
             Sign back into your account
           </span>
         </div>
-        <Form {...form}>
+        {/* <Form {...form}>
           <form onSubmit={onSubmit} className="space-y-8">
             <Card className="w-full md:w-[36rem] justify-self-center pt-6">
               <CardContent className="grid gap-4">
@@ -112,7 +122,10 @@ function Login() {
               </CardFooter>
             </Card>
           </form>
-        </Form>
+        </Form> */}
+        <Button variant="outline" size="icon" onClick={onGitHubSignIn}>
+          <Icons.gitHub className="h-6 w-6" />
+        </Button>
         <Button asChild className="w-min self-center" variant="ghost">
           <Link to="/auth/register">
             New here? Create an account

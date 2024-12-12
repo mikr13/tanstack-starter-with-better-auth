@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import {
@@ -12,15 +11,13 @@ import {
 import { Input } from '@/components/ui/input';
 import { authSchemas, useSignUpMutation } from '@/services/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from '@tanstack/react-router';
-import { createFileRoute, useRouter } from '@tanstack/react-router';
+import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { ArrowRight } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import type { z } from 'zod';
 
 function Register() {
-  const { t } = useTranslation();
   const router = useRouter();
   const { mutateAsync } = useSignUpMutation();
   const form = useForm<z.infer<typeof authSchemas.signUp>>({
@@ -52,9 +49,9 @@ function Register() {
     <div className="container flex flex-col space-y-6 justify-center items-center h-screen">
       <div className="flex flex-col space-y-4">
         <div className="flex flex-col space-y-2 pl-2">
-          <h1 className="text-2xl font-semibold">{t('Auth.register.title')}</h1>
+          <h1 className="text-2xl font-semibold">Register</h1>
           <span className="text-sm text-muted-foreground">
-            {t('Auth.register.subtitle')}
+            Create an account to get started
           </span>
         </div>
         <Form {...form}>
@@ -67,7 +64,7 @@ function Register() {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{t('Auth.register.name')}</FormLabel>
+                        <FormLabel>Name</FormLabel>
                         <FormControl>
                           <Input {...field} placeholder="John Doe" />
                         </FormControl>
@@ -82,7 +79,7 @@ function Register() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{t('Auth.register.email')}</FormLabel>
+                        <FormLabel>Email</FormLabel>
                         <FormControl>
                           <Input
                             {...field}
@@ -101,7 +98,7 @@ function Register() {
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{t('Auth.register.password')}</FormLabel>
+                        <FormLabel>Password</FormLabel>
                         <FormControl>
                           <Input {...field} type="password" />
                         </FormControl>
@@ -112,7 +109,7 @@ function Register() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="w-full">{t('Auth.register.signUp')}</Button>
+                <Button className="w-full">Sign up</Button>
               </CardFooter>
             </Card>
           </form>
@@ -120,7 +117,7 @@ function Register() {
 
         <Button asChild className="w-min self-center" variant="ghost">
           <Link to="/auth/login">
-            {t('Auth.register.alreadyHaveAnAccount')}
+            Already have an account? Sign in
             <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </Button>

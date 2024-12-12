@@ -1,18 +1,18 @@
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { Button } from '@/components/ui/button';
-import { useAuthQuery, useSignOutMutation } from '@/services/auth';
+import { signOut, useSession } from '@/services/auth';
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import type { FC } from 'react';
 import { toast } from 'sonner';
 
 const HeroHeader: FC = () => {
-  const { data: auth } = useAuthQuery();
+  // @ts-expect-error - `auth` is defined in the global scope
+  const { data, isPending, error } = useSession();
   const router = useRouter();
-  const { mutateAsync: signOut } = useSignOutMutation();
 
   const handleSignOut = async () => {
     try {
-      if (!auth?.isAuthenticated) return;
+      if (!data?.session) return;
 
       const signOutPromise = signOut(undefined);
 
@@ -35,7 +35,7 @@ const HeroHeader: FC = () => {
     <div className="flex flex-col gap-y-8 items-center mt-[8rem] z-10 h-[25vh] mb-12 md:-mb-4">
       <div className="flex flex-col gap-y-4">
         <div className="flex flex-row gap-x-4 justify-between">
-          {auth?.isAuthenticated ? (
+          {data?.session ? (
             <>
               <Button variant="outline" onClick={handleSignOut}>
                 Sign out
@@ -54,7 +54,7 @@ const HeroHeader: FC = () => {
         <div className='my-4'>Welcome to TanStack starter!</div>
         <small>BetterAuth Debug:</small>
         <div className="p-2 border bg-card rounded-md shadow-sm w-[512px]">
-          <pre className="text-wrap">{JSON.stringify(auth, null, 2)}</pre>
+          <pre className="text-wrap">{JSON.stringify(data, null, 2)}</pre>
         </div>
       </div>
     </div>
