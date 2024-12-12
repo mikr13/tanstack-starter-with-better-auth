@@ -1,21 +1,17 @@
-import type { ReactNode } from 'react';
-import { useEffect } from 'react';
-import {
-  createRootRouteWithContext
-} from '@tanstack/react-router';
-import { Outlet, ScrollRestoration } from '@tanstack/react-router';
-import { Body, Head, Html, Meta, Scripts } from '@tanstack/start';
 import { ThemeProvider } from '@/components/theme/ThemeProvider';
-import type { QueryClient } from '@tanstack/react-query';
-import { getAuthQueryOptions } from '@/services/auth';
-import { I18nextProvider } from 'react-i18next';
-import i18n, { getLocale, supportedLocales } from '@/lib/i18n';
 import { Toaster } from '@/components/ui/sonner';
+import { getAuthQueryOptions } from '@/services/auth';
+import type { QueryClient } from '@tanstack/react-query';
+import {
+  createRootRouteWithContext,
+  Outlet, ScrollRestoration
+} from '@tanstack/react-router';
+import { Body, Head, Html, Meta, Scripts } from '@tanstack/start';
+import type { ReactNode } from 'react';
 
-import '@/lib/i18n';
 import globalCss from '@/styles/globals.css?url';
-import geist from 'non.geist?url';
 import geistMono from 'non.geist/mono?url';
+import geist from 'non.geist?url';
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -41,24 +37,21 @@ export const Route = createRootRouteWithContext<{
   scripts: () =>
     import.meta.env.DEV
       ? [
-          {
-            type: 'module',
-            children: `import RefreshRuntime from "/_build/@react-refresh";
+        {
+          type: 'module',
+          children: `import RefreshRuntime from "/_build/@react-refresh";
 RefreshRuntime.injectIntoGlobalHook(window)
 window.$RefreshReg$ = () => {}
 window.$RefreshSig$ = () => (type) => type`,
-          },
-        ]
+        },
+      ]
       : [],
   beforeLoad: async ({ context }) => {
     const auth = await context.queryClient.ensureQueryData(
       getAuthQueryOptions(),
     );
 
-    // You could also get geolocation for the locale
-    const locale = await getLocale();
-
-    return { auth, locale };
+    return { auth };
   },
 });
 
@@ -71,28 +64,18 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: ReactNode }) {
-  
-  useEffect(() => {
-    const storedLang = localStorage.getItem('i18nextLng');
-    if (storedLang && supportedLocales.includes(storedLang as (typeof supportedLocales)[number])) {
-      i18n.changeLanguage(storedLang);
-    }
-  }, []);
-
   return (
     <Html>
       <Head>
         <Meta />
       </Head>
       <Body>
-        <I18nextProvider i18n={i18n}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {children}
-            <Toaster position="top-center" />
-          </ThemeProvider>
-          <ScrollRestoration />
-          <Scripts />
-        </I18nextProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+          <Toaster position="top-center" />
+        </ThemeProvider>
+        <ScrollRestoration />
+        <Scripts />
       </Body>
     </Html>
   );

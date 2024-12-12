@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import {
@@ -12,14 +12,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { authSchemas, useSignInMutation } from '@/services/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createFileRoute, useRouter } from '@tanstack/react-router';
-import { Alert } from '@/components/ui/alert';
+import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import type { z } from 'zod';
-import { Link } from '@tanstack/react-router';
 
 function Login() {
   const { t } = useTranslation();
@@ -39,7 +37,7 @@ function Login() {
       onSuccess: () => {
         router.navigate({ to: '/' });
       },
-      onError: () => {},
+      onError: () => { },
     });
 
     toast.promise(signUpPromise, {
@@ -64,9 +62,9 @@ function Login() {
     <div className="container flex flex-col h-screen space-y-6 justify-center items-center">
       <div className="flex flex-col space-y-4">
         <div className="flex flex-col space-y-2 pl-2">
-          <h1 className="text-2xl font-semibold">{t('Auth.login.title')}</h1>
+          <h1 className="text-2xl font-semibold">Welcome back</h1>
           <span className="text-sm text-muted-foreground">
-            {t('Auth.login.subtitle')}
+            Sign back into your account
           </span>
         </div>
         <Form {...form}>
@@ -80,7 +78,7 @@ function Login() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{t('Auth.login.email')}</FormLabel>
+                        <FormLabel>Email</FormLabel>
                         <FormControl>
                           <Input
                             {...field}
@@ -99,7 +97,7 @@ function Login() {
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{t('Auth.login.password')}</FormLabel>
+                        <FormLabel>Password</FormLabel>
                         <FormControl>
                           <Input {...field} type="password" />
                         </FormControl>
@@ -110,14 +108,14 @@ function Login() {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="w-full">{t('Auth.login.signIn')}</Button>
+                <Button className="w-full">Sign in</Button>
               </CardFooter>
             </Card>
           </form>
         </Form>
         <Button asChild className="w-min self-center" variant="ghost">
           <Link to="/auth/register">
-            {t('Auth.login.newHere')}
+            New here? Create an account
             <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </Button>

@@ -1,24 +1,21 @@
-import type { FC } from 'react';
-import { useTranslation } from 'react-i18next';
-import LocaleToggle from '@/components/LocaleToggle';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { Button } from '@/components/ui/button';
 import { useAuthQuery, useSignOutMutation } from '@/services/auth';
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
+import type { FC } from 'react';
 import { toast } from 'sonner';
-import { ThemeToggle } from '@/components/ThemeToggle';
 
 const HeroHeader: FC = () => {
   const { data: auth } = useAuthQuery();
-  const { t } = useTranslation();
   const router = useRouter();
   const { mutateAsync: signOut } = useSignOutMutation();
 
   const handleSignOut = async () => {
     try {
       if (!auth?.isAuthenticated) return;
-      
+
       const signOutPromise = signOut(undefined);
-      
+
       toast.promise(signOutPromise, {
         loading: 'Signing out...',
         success: 'Signed out successfully',
@@ -26,7 +23,7 @@ const HeroHeader: FC = () => {
       });
 
       await signOutPromise;
-      
+
       // Refresh the page to clear the auth state
       router.invalidate();
     } catch (error) {
@@ -41,7 +38,7 @@ const HeroHeader: FC = () => {
           {auth?.isAuthenticated ? (
             <>
               <Button variant="outline" onClick={handleSignOut}>
-                {t('Auth.logout.signOut')}
+                Sign out
               </Button>
               <Button asChild variant="default">
                 <Link to="/dashboard">Go to Dashboard</Link>
@@ -49,13 +46,12 @@ const HeroHeader: FC = () => {
             </>
           ) : (
             <Button asChild variant="link">
-              <Link to="/auth/login">{t('Auth.login.signIn')}</Link>
+              <Link to="/auth/login">Login</Link>
             </Button>
           )}
           <ThemeToggle />
-          <LocaleToggle />
         </div>
-        <div className='my-4'>{t('Home.title', `Welcome to TanStack starter!`)}</div>
+        <div className='my-4'>Welcome to TanStack starter!</div>
         <small>BetterAuth Debug:</small>
         <div className="p-2 border bg-card rounded-md shadow-sm w-[512px]">
           <pre className="text-wrap">{JSON.stringify(auth, null, 2)}</pre>
